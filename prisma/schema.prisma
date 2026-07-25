@@ -1,0 +1,58 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Survey {
+  id             String   @id
+  nama           String
+  noHp           String
+  jenisKelamin   String
+  jenisPelayanan String   @default("Umum")
+  answers        String   // JSON string of answer pairs
+  kritiksaran    String?
+  createdAt      DateTime @default(now())
+}
+
+model Question {
+  id       String  @id
+  question String
+  type     String  @default("radio")
+  options  String  // JSON string of options array
+  active   Boolean @default(true)
+  order    Int
+}
+
+model Service {
+  id               String  @id
+  title            String
+  category         String
+  description      String
+  operationalHours String
+  fee              String
+  requirements     String? // JSON array string
+  flow             String? // JSON array string
+  icon             String? @default("FileText")
+  status           String  @default("Aktif")
+}
+
+model SIMSchedule {
+  id         String  @id
+  tanggal    String
+  hari       String
+  lokasi     String
+  jam        String
+  keterangan String?
+  poster     String?
+  status     String  @default("Mendatang")
+}
+
+model SiteConfig {
+  id        Int      @id @default(1)
+  data      String   // Complete site config JSON
+  updatedAt DateTime @updatedAt
+}
